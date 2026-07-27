@@ -14,11 +14,11 @@ jobs:
       - name: Lấy mã nguồn về máy ảo
         uses: actions/checkout@v4
 
-      - name: Gọi Bot Gemini 2.5 Flash vào Review
+      - name: Gọi Bot Gemini vào Review
         uses: sshnaidm/gemini-code-review-action@v2
         with:
           gemini-key: ${{ secrets.GEMINI_API_KEY }}
-          model: gemini-2.5-flash
+          model: gemini-flash-latest
           prompt: |
             Bạn là một kỹ sư QC.
             Hãy review các đoạn code sau bằng Tiếng Việt.
