@@ -5,6 +5,7 @@ on:
     branches:
       - main
 
+
 jobs:
   build-and-deploy:
     runs-on: self-hosted # Đổi điểm nổ từ máy chủ GitHub sang chính server Ubuntu của bạn
