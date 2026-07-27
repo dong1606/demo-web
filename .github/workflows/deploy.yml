@@ -1,0 +1,33 @@
+name: Tự động Đóng gói & Triển khai Frontend
+
+on:
+  push:
+    branches:
+      - main # Kịch bản chỉ chạy khi có code mới được đẩy/gộp vào nhánh main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kéo mã nguồn mới nhất
+        uses: actions/checkout@v4
+
+      - name: Cài đặt Node.js môi trường
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Đảm bảo tương thích tốt với Vite
+
+      - name: Cài đặt thư viện và Build ra thư mục dist
+        run: |
+          npm install
+          npm run build
+
+      - name: Đẩy bản Build lên Server Ubuntu
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          ARGS: "-rlgoDzvc -i --delete"
+          SOURCE: "dist/"
+          REMOTE_HOST: ${{ secrets.SERVER_HOST }}
+          REMOTE_USER: ${{ secrets.SERVER_USER }}
+          TARGET: "/var/www/demo-web" # Bạn có thể sửa lại đường dẫn này cho khớp với thư mục cấu hình Nginx của bạn
